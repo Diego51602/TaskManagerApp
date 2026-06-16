@@ -1,0 +1,51 @@
+.container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.nueva-tarea {
+  margin-bottom: 30px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.tareas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.tarea-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tachado {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.completada {
+  opacity: 0.6;
+}
+
+.descripcion {
+  color: #666;
+  margin: 5px 0 0 30px;
+  font-size: 14px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.sin-tareas {
+  text-align: center;
+  color: #999;
+  margin-top: 40px;
+}

@@ -1,0 +1,50 @@
+<mat-toolbar color="primary">
+  <span>Task Manager</span>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="container">
+
+  <mat-card class="nueva-tarea">
+    <mat-card-header>
+      <mat-card-title>Nueva Tarea</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="outline">
+        <mat-label>Título</mat-label>
+        <input matInput [(ngModel)]="nuevaTarea.titulo" placeholder="Título de la tarea">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput [(ngModel)]="nuevaTarea.descripcion" placeholder="Descripción"></textarea>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="crearTarea()" [disabled]="loading">
+        {{ loading ? 'Creando...' : 'Crear Tarea' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div class="tareas-lista">
+    <mat-card *ngFor="let tarea of tareas" [class.completada]="tarea.completada">
+      <mat-card-content>
+        <div class="tarea-header">
+          <mat-checkbox [checked]="tarea.completada" (change)="toggleCompletada(tarea)">
+            <span [class.tachado]="tarea.completada">{{ tarea.titulo }}</span>
+          </mat-checkbox>
+          <button mat-icon-button color="warn" (click)="eliminarTarea(tarea.id!)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <p class="descripcion">{{ tarea.descripcion }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <p *ngIf="tareas.length === 0" class="sin-tareas">No tienes tareas aún. ¡Crea una!</p>
+  </div>
+
+</div>
