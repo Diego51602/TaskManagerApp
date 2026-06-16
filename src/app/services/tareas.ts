@@ -13,7 +13,7 @@ export interface Tarea {
   providedIn: 'root'
 })
 export class TareasService {
-  private apiUrl = 'http://localhost:5070/api/tareas';
+  private apiUrl = 'https://taskmanagerapi-production-b2f6.up.railway.app/api/tareas';
 
   constructor(private http: HttpClient) {}
 

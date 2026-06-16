@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5070/api/auth';
+  private apiUrl = 'https://taskmanagerapi-production-b2f6.up.railway.app/api/auth';
 
   constructor(private http: HttpClient, private router: Router) {}
 
