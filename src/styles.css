@@ -1,1 +1,91 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #0f0f1a;
+  color: white;
+}
+
+.mat-mdc-card {
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+  background: #1e1e2e !important;
+  color: white !important;
+}
+
+.mat-mdc-raised-button {
+  border-radius: 8px !important;
+}
+
+app-tareas mat-toolbar {
+  background: linear-gradient(90deg, #1a1a2e, #16213e) !important;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3) !important;
+}
+
+app-tareas mat-toolbar .toolbar-title {
+  background: linear-gradient(90deg, #6c63ff, #48cae4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+  font-size: 22px;
+}
+app-tareas .mat-mdc-input-element {
+  color: white !important;
+  caret-color: #6c63ff !important;
+}
+
+app-tareas .mat-mdc-floating-label {
+  color: #aaa !important;
+}
+
+app-tareas .mdc-text-field--outlined .mdc-notched-outline__leading,
+app-tareas .mdc-text-field--outlined .mdc-notched-outline__notch,
+app-tareas .mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-color: rgba(255,255,255,0.15) !important;
+}
+
+app-tareas .mat-mdc-select-value {
+  color: white !important;
+}
+
+app-tareas .mat-mdc-raised-button {
+  background: linear-gradient(90deg, #6c63ff, #48cae4) !important;
+  color: white !important;
+}
+
+app-tareas .mat-mdc-raised-button:disabled {
+  background: rgba(255,255,255,0.1) !important;
+  color: #555 !important;
+}
+
+app-tareas .mat-mdc-icon-button {
+  color: #aaa !important;
+}
+
+app-tareas mat-checkbox {
+  color: white !important;
+}
+
+app-tareas .mat-mdc-card-title {
+  color: white !important;
+}
+
+app-tareas .mdc-text-field--filled {
+  background: transparent !important;
+}
+
+app-tareas .mdc-text-field--filled {
+  background: rgba(255,255,255,0.05) !important;
+  border-radius: 8px !important;
+}
+
+app-tareas .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background: rgba(255,255,255,0.05) !important;
+}
+
+app-tareas .mdc-line-ripple {
+  display: none !important;
+}
+
+app-tareas .mat-mdc-form-field-focus-overlay {
+  background: transparent !important;
+}

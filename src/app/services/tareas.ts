@@ -7,6 +7,8 @@ export interface Tarea {
   titulo: string;
   descripcion: string;
   completada: boolean;
+  fechaLimite?: string;
+  categoria: string;
 }
 
 @Injectable({

@@ -1,22 +1,76 @@
+.toolbar-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
 .container {
-  max-width: 700px;
-  margin: 30px auto;
+  max-width: 750px;
+  margin: 40px auto;
   padding: 0 20px;
 }
 
 .nueva-tarea {
-  margin-bottom: 30px;
+  margin-bottom: 24px;
+  padding: 24px !important;
 }
 
-mat-form-field {
+mat-card-content mat-form-field {
+  display: block;
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+}
+
+.fila-opciones {
+  display: flex;
+  gap: 16px;
+}
+
+.campo-categoria {
+  flex: 1;
+}
+
+.campo-fecha {
+  flex: 1;
+}
+
+.btn-crear {
+  width: 100%;
+  height: 46px;
+  font-size: 15px !important;
+}
+
+.filtros {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .tareas-lista {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
+}
+
+.tarea-card {
+  padding: 8px !important;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tarea-card:hover {
+  transform: translateY(-2px);
+}
+
+.tarea-card.completada {
+  opacity: 0.6;
+}
+
+.tarea-card.vencida {
+  border-left: 3px solid #e53935;
 }
 
 .tarea-header {
@@ -25,27 +79,116 @@ mat-form-field {
   align-items: center;
 }
 
+.tarea-titulo {
+  font-size: 16px;
+  font-weight: 500;
+}
+
 .tachado {
   text-decoration: line-through;
   color: #999;
 }
 
-.completada {
-  opacity: 0.6;
-}
-
 .descripcion {
-  color: #666;
-  margin: 5px 0 0 30px;
+  color: #777;
+  margin: 4px 0 0 32px;
   font-size: 14px;
 }
 
-.spacer {
-  flex: 1 1 auto;
+.tarea-acciones {
+  display: flex;
+  gap: 4px;
+}
+
+.tarea-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  margin-left: 32px;
+}
+
+.chip-categoria {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chip-general { background: #e3f2fd; color: #1565c0; }
+.chip-trabajo { background: #f3e5f5; color: #6a1b9a; }
+.chip-personal { background: #e8f5e9; color: #2e7d32; }
+.chip-urgente { background: #ffebee; color: #c62828; }
+.chip-ideas { background: #fff8e1; color: #f57f17; }
+
+.fecha-limite {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #888;
+}
+
+.vencida-text {
+  color: #e53935 !important;
+  font-weight: 600;
+}
+
+.edicion {
+  display: flex;
+  flex-direction: column;
+}
+
+.edicion mat-form-field {
+  width: 100%;
+}
+
+.edicion-acciones {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
 }
 
 .sin-tareas {
   text-align: center;
-  color: #999;
-  margin-top: 40px;
+  color: #aaa;
+  margin-top: 60px;
+  font-size: 16px;
+}
+
+.nueva-tarea {
+  border: 1px solid rgba(255,255,255,0.05) !important;
+}
+
+.tarea-card {
+  border: 1px solid rgba(255,255,255,0.05) !important;
+  background: #1e1e2e !important;
+}
+
+.tarea-titulo {
+  color: #eee;
+}
+
+.descripcion {
+  color: #888 !important;
+}
+
+.nueva-tarea mat-card-title {
+  color: #eee !important;
+}
+
+.filtros button {
+  color: #aaa !important;
+  border-color: rgba(255,255,255,0.15) !important;
+}
+
+.filtros button[color="primary"] {
+  color: #6c63ff !important;
+  border-color: #6c63ff !important;
+}
+
+.sin-tareas {
+  color: #555 !important;
 }

@@ -1,50 +1,147 @@
 <mat-toolbar color="primary">
-  <span>Task Manager</span>
+  <span class="toolbar-title">Task Manager</span>
   <span class="spacer"></span>
-  <button mat-icon-button (click)="logout()">
+  <button mat-icon-button (click)="logout()" matTooltip="Cerrar sesión">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
 
 <div class="container">
 
+  <!-- Nueva Tarea -->
   <mat-card class="nueva-tarea">
-    <mat-card-header>
-      <mat-card-title>Nueva Tarea</mat-card-title>
+    <mat-card-header style="padding-bottom: 20px;">
+      <mat-card-title style="font-size: 22px; font-weight: 700; color: #444; letter-spacing: -0.5px;">
+        Nueva Tarea
+      </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="fill" style="width:100%">
         <mat-label>Título</mat-label>
-        <input matInput [(ngModel)]="nuevaTarea.titulo" placeholder="Título de la tarea">
+        <input matInput [(ngModel)]="nuevaTarea.titulo" placeholder="¿Qué necesitas hacer?" maxlength="100" required>
+        <mat-hint align="end">{{ nuevaTarea.titulo.length }}/100</mat-hint>
+        <mat-icon matSuffix>edit</mat-icon>
+        <mat-error>El título es requerido</mat-error>
       </mat-form-field>
-      <mat-form-field appearance="outline">
+
+      <mat-form-field appearance="fill" style="width:100%">
         <mat-label>Descripción</mat-label>
-        <textarea matInput [(ngModel)]="nuevaTarea.descripcion" placeholder="Descripción"></textarea>
+        <textarea matInput [(ngModel)]="nuevaTarea.descripcion" placeholder="Detalles opcionales" rows="2"
+          maxlength="300"></textarea>
+        <mat-hint align="end">{{ nuevaTarea.descripcion.length }}/300</mat-hint>
       </mat-form-field>
+
+      <div class="fila-opciones">
+        <mat-form-field appearance="fill" class="campo-categoria">
+          <mat-label>Categoría</mat-label>
+          <mat-select [(ngModel)]="nuevaTarea.categoria">
+            <mat-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="campo-fecha">
+          <mat-label>Fecha límite</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="nuevaTarea.fechaLimite">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="crearTarea()" [disabled]="loading">
+      <button mat-raised-button color="primary" class="btn-crear" (click)="crearTarea()"
+        [disabled]="loading || !nuevaTarea.titulo">
+        <mat-icon>add</mat-icon>
         {{ loading ? 'Creando...' : 'Crear Tarea' }}
       </button>
     </mat-card-actions>
   </mat-card>
 
+  <!-- Filtros -->
+  <div class="filtros">
+    <button mat-stroked-button [color]="filtroActivo === 'todas' ? 'primary' : ''" (click)="aplicarFiltro('todas')">
+      Todas ({{ tareas.length }})
+    </button>
+    <button mat-stroked-button [color]="filtroActivo === 'pendientes' ? 'primary' : ''"
+      (click)="aplicarFiltro('pendientes')">
+      Pendientes ({{ tareas.length - tareas.filter(t => t.completada).length }})
+    </button>
+    <button mat-stroked-button [color]="filtroActivo === 'completadas' ? 'primary' : ''"
+      (click)="aplicarFiltro('completadas')">
+      Completadas ({{ tareas.filter(t => t.completada).length }})
+    </button>
+  </div>
+
+  <!-- Lista de Tareas -->
   <div class="tareas-lista">
-    <mat-card *ngFor="let tarea of tareas" [class.completada]="tarea.completada">
+    <mat-card *ngFor="let tarea of tareasFiltradas" class="tarea-card" [class.completada]="tarea.completada"
+      [class.vencida]="estaVencida(tarea)">
       <mat-card-content>
-        <div class="tarea-header">
-          <mat-checkbox [checked]="tarea.completada" (change)="toggleCompletada(tarea)">
-            <span [class.tachado]="tarea.completada">{{ tarea.titulo }}</span>
-          </mat-checkbox>
-          <button mat-icon-button color="warn" (click)="eliminarTarea(tarea.id!)">
-            <mat-icon>delete</mat-icon>
-          </button>
+
+        <!-- Vista normal -->
+        <div *ngIf="editandoId !== tarea.id">
+          <div class="tarea-header">
+            <mat-checkbox [checked]="tarea.completada" (change)="toggleCompletada(tarea)">
+              <span class="tarea-titulo" [class.tachado]="tarea.completada">{{ tarea.titulo }}</span>
+            </mat-checkbox>
+            <div class="tarea-acciones">
+              <button mat-icon-button (click)="editarTarea(tarea)" matTooltip="Editar">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="eliminarTarea(tarea.id!)" matTooltip="Eliminar">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <p class="descripcion" *ngIf="tarea.descripcion">{{ tarea.descripcion }}</p>
+          <div class="tarea-meta">
+            <span class="chip-categoria chip-{{tarea.categoria.toLowerCase()}}">{{ tarea.categoria }}</span>
+            <span class="fecha-limite" *ngIf="tarea.fechaLimite" [class.vencida-text]="estaVencida(tarea)">
+              <mat-icon style="font-size:14px;height:14px;width:14px;">schedule</mat-icon>
+              {{ tarea.fechaLimite | date:'dd/MM/yyyy' }}
+              <span *ngIf="estaVencida(tarea)"> — ⚠️ Vencida</span>
+            </span>
+          </div>
         </div>
-        <p class="descripcion">{{ tarea.descripcion }}</p>
+
+        <!-- Vista edición -->
+        <div *ngIf="editandoId === tarea.id" class="edicion">
+          <mat-form-field appearance="fill">
+            <mat-label>Título</mat-label>
+            <input matInput [(ngModel)]="tarea.titulo">
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput [(ngModel)]="tarea.descripcion" rows="2"></textarea>
+          </mat-form-field>
+          <div class="fila-opciones">
+            <mat-form-field appearance="fill" class="campo-categoria">
+              <mat-label>Categoría</mat-label>
+              <mat-select [(ngModel)]="tarea.categoria">
+                <mat-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="campo-fecha">
+              <mat-label>Fecha límite</mat-label>
+              <input matInput [matDatepicker]="pickerEdit" [(ngModel)]="tarea.fechaLimite">
+              <mat-datepicker-toggle matSuffix [for]="pickerEdit"></mat-datepicker-toggle>
+              <mat-datepicker #pickerEdit></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="edicion-acciones">
+            <button mat-raised-button color="primary" (click)="guardarEdicion(tarea)" [disabled]="!tarea.titulo.trim()">
+              <mat-icon>save</mat-icon> Guardar
+            </button>
+            <button mat-stroked-button (click)="cancelarEdicion()">Cancelar</button>
+          </div>
+        </div>
+
       </mat-card-content>
     </mat-card>
 
-    <p *ngIf="tareas.length === 0" class="sin-tareas">No tienes tareas aún. ¡Crea una!</p>
+    <p *ngIf="tareasFiltradas.length === 0" class="sin-tareas">
+      <mat-icon style="font-size:48px;height:48px;width:48px;color:#ddd">inbox</mat-icon>
+      <br>No hay tareas aquí
+    </p>
   </div>
 
 </div>
